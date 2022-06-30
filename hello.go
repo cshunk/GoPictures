@@ -102,4 +102,16 @@ func main() {
 	for _, l := range r.Labels {
 		fmt.Printf("- %s\n", l.Name)
 	}
+
+	em, err := srv.Users.Messages.List(user).Do()
+
+	for _, l := range em.Messages {
+		message, err := srv.Users.Messages.Get(user, l.Id).Do()
+		if err != nil {
+			log.Fatalf("err")
+		}
+		for _, q := range message.Payload.Headers {
+			fmt.Printf(" - %s, %s\n", q.Name, q.Value)
+		}
+	}
 }
